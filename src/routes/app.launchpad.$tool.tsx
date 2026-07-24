@@ -27,6 +27,7 @@ import {
 } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 import { OutputBody, OutputHeader, copyText } from "@/components/app/OutputRenderer";
+import { ToolOutput, hasStructuredOutput } from "@/components/tools/ToolOutput";
 import { EmptyState } from "@/components/app/EmptyState";
 import { ErrorState } from "@/components/app/ErrorState";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -2239,7 +2240,20 @@ function ToolPage() {
 
               {output && !generating && (
                 <div className="max-h-[68vh] overflow-y-auto pr-1">
-                  <OutputBody toolKey={effectiveToolKey || tool.key} output={coreOutput} />
+                  {hasStructuredOutput(coreOutput) ? (
+                    /* Research-enriched tools return the structured contract
+                       (verdict/chips/drawers/guidance) — premium renderer.
+                       Everything else stays on the legacy per-tool renderer. */
+                    <ToolOutput
+                      toolName={tool.name}
+                      output={coreOutput}
+                      runId={runId}
+                      runTitle={title}
+                      contextValue={primaryFieldValue}
+                    />
+                  ) : (
+                    <OutputBody toolKey={effectiveToolKey || tool.key} output={coreOutput} />
+                  )}
                   {contextUsed.length > 0 && (
                     <div
                       className="mt-4 rounded-xl border p-3"
