@@ -4,6 +4,8 @@ import { CLAUDE_MODEL } from "./config.ts";
 import { callPAL, buildUsageRows } from "./pal/index.ts";
 import type { PALResult } from "./pal/types.ts";
 import { assembleContext } from "./context.ts";
+import { fetchResearch } from "./perplexity.ts";
+import { getResearchConfig } from "./tool-research-map.ts";
 
 export const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -328,6 +330,104 @@ export function toolOutputShape(toolKey: string): string | null {
   return null;
 }
 
+// ── Guidance contract (research-enriched tools only) ─────────────────────────
+// Applied on top of each tool's existing prompt + schema — never replacing
+// them. Turns conclusions into a direction plus an ordered, launchable plan.
+const GUIDANCE_CONTRACT_PROMPT = `
+
+## STRUCTURED GUIDANCE RULES
+Also populate the structured presentation fields (verdict, chips, drawers, guidance, nextTool):
+- verdict.label: the call in <=6 words; verdict.detail: 1-2 sentences; verdict.score 0-100 with scoreType.
+- chips: 2-4 glanceable stats a founder reads in 3 seconds, each with a tone.
+- drawers: the depth, grouped (strengths / risks / evidence), collapsed by default in the UI.
+- guidance.direction: ONE sentence — the single clear move this whole answer points to.
+- guidance.steps: 3-5 ordered, imperative next moves that execute the direction. Each step is a real
+  action in sequence, specific to THIS founder's context and the research findings — never generic.
+  Step 1 MUST include a launch object pointing at the right next Launchpad tool. Later steps include
+  launch only when a tool genuinely does that work; manual steps omit it.
+- Ground every number and named competitor in the provided research; do not invent sources.`;
+
+function withGuidanceContract(schema: {
+  name: string;
+  description: string;
+  parameters: Record<string, unknown>;
+}) {
+  const params = schema.parameters as { properties?: Record<string, unknown> };
+  return {
+    ...schema,
+    parameters: {
+      ...schema.parameters,
+      properties: {
+        ...(params.properties ?? {}),
+        verdict: {
+          type: "object",
+          properties: {
+            label: { type: "string", description: "<=6 words" },
+            detail: { type: "string", description: "1-2 sentences" },
+            score: { type: "number", description: "0-100" },
+            scoreType: { type: "string", enum: ["confidence", "threat", "opportunity"] },
+          },
+        },
+        chips: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              label: { type: "string" },
+              value: { type: "string" },
+              tone: { type: "string", enum: ["neutral", "good", "warning", "bad"] },
+            },
+          },
+        },
+        drawers: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              icon: { type: "string", enum: ["trophy", "alert-triangle", "target-arrow"] },
+              title: { type: "string" },
+              tone: { type: "string", enum: ["good", "warning", "accent"] },
+              items: { type: "array", items: { type: "string" } },
+            },
+          },
+        },
+        guidance: {
+          type: "object",
+          properties: {
+            direction: {
+              type: "string",
+              description: "1 sentence — the single clear move this answer points to",
+            },
+            steps: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  n: { type: "number" },
+                  title: { type: "string", description: "imperative" },
+                  detail: { type: "string", description: "1 sentence how" },
+                  launch: {
+                    type: "object",
+                    properties: {
+                      slug: { type: "string", description: "Launchpad tool slug" },
+                      label: { type: "string" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        longform: { type: "string", description: "optional markdown prose" },
+        nextTool: {
+          type: "object",
+          properties: { slug: { type: "string" }, label: { type: "string" } },
+        },
+      },
+    },
+  };
+}
+
 const CONTEXT_CONTRACT_PROMPT = `
 
 ## CONTEXT RULES
@@ -393,14 +493,38 @@ export async function runTool(opts: {
     }).catch(() => ({ block: "", used: [] as string[] }));
 
     const baseUserPrompt = opts.buildUserPrompt(input);
-    const userPrompt = assembled.block
+    let userPrompt = assembled.block
       ? `${assembled.block}\n\n## TASK INPUT\n${baseUserPrompt}`
       : baseUserPrompt;
 
+    // ── Research enrichment (enrich → synthesize) ────────────────────────
+    // Tools declared in the static research map get grounded, cited findings
+    // from Perplexity injected as context BEFORE the existing Claude call.
+    // Claude still writes the answer; Perplexity never does. Any failure
+    // (no key, timeout, HTTP error) degrades to the unenriched behavior.
+    let researchCitations: string[] = [];
+    const researchCfg = getResearchConfig(opts.toolKey);
+    if (researchCfg) {
+      const research = await fetchResearch({
+        query: researchCfg.buildQuery(input),
+        tier: researchCfg.tier,
+        systemHint: researchCfg.systemHint,
+      });
+      if (research.ok && research.content) {
+        userPrompt +=
+          `\n\n<current_research>\nUse the following current, sourced findings as grounding. ` +
+          `Do not contradict them. Cite where relevant.\n${research.content}\n</current_research>`;
+        researchCitations = research.citations;
+      }
+    }
+
     const palResult = await callClaudeTracked(
-      opts.systemPrompt + CONTEXT_CONTRACT_PROMPT,
+      (researchCfg ? opts.systemPrompt + GUIDANCE_CONTRACT_PROMPT : opts.systemPrompt) +
+        CONTEXT_CONTRACT_PROMPT,
       userPrompt,
-      withOutputContract(opts.schema),
+      researchCfg
+        ? withGuidanceContract(withOutputContract(opts.schema))
+        : withOutputContract(opts.schema),
       ctx.plan,
       opts.toolKey,
     );
@@ -412,6 +536,12 @@ export async function runTool(opts: {
       (!Array.isArray(output.context_used) || output.context_used.length === 0)
     ) {
       output.context_used = assembled.used;
+    }
+
+    // Surface research sources in the payload the client receives now,
+    // in addition to the durable tool_runs.citations column.
+    if (researchCitations.length > 0) {
+      output.research_citations = researchCitations;
     }
 
     const admin = createClient(
@@ -426,6 +556,7 @@ export async function runTool(opts: {
         .update({
           status: "succeeded",
           output,
+          citations: researchCitations,
           model: palResult.model,
           provider_name: palResult.provider,
           completed_at: new Date().toISOString(),
