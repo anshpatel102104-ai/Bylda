@@ -191,7 +191,7 @@ function AcademyIndex({
           className="pointer-events-none absolute -top-16 -right-10 h-56 w-56 rounded-full"
           style={{
             background:
-              "radial-gradient(circle, color-mix(in oklab, var(--primary) 22%, transparent) 0%, transparent 70%)",
+              "radial-gradient(circle, color-mix(in oklab, var(--primary) 15%, transparent) 0%, transparent 70%)",
           }}
         />
         <div

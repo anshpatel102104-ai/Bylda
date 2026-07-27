@@ -292,7 +292,7 @@ function ModuleWorkspace() {
             className="pointer-events-none absolute -top-12 -right-8 h-40 w-40 rounded-full"
             style={{
               background:
-                "radial-gradient(circle, color-mix(in oklab, var(--primary) 22%, transparent) 0%, transparent 70%)",
+                "radial-gradient(circle, color-mix(in oklab, var(--primary) 15%, transparent) 0%, transparent 70%)",
             }}
           />
           <div

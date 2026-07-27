@@ -442,7 +442,7 @@ function MissionHero({
       <div
         className="pointer-events-none absolute -top-20 -right-16 h-64 w-64 rounded-full"
         style={{
-          background: `radial-gradient(circle, color-mix(in oklab, ${accent} 20%, transparent) 0%, transparent 70%)`,
+          background: `radial-gradient(circle, color-mix(in oklab, ${accent} 14%, transparent) 0%, transparent 70%)`,
         }}
       />
 
@@ -552,7 +552,7 @@ function CourseContinueCard({ stageLabel }: { stageLabel: string }) {
         className="pointer-events-none absolute -top-16 -right-10 h-48 w-48 rounded-full"
         style={{
           background:
-            "radial-gradient(circle, color-mix(in oklab, var(--primary) 20%, transparent) 0%, transparent 70%)",
+            "radial-gradient(circle, color-mix(in oklab, var(--primary) 14%, transparent) 0%, transparent 70%)",
         }}
       />
       <span
