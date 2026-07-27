@@ -621,7 +621,7 @@ function TemplatePreviewModal({
                   {[
                     {
                       icon: Sparkles,
-                      text: "Open the Launchpad and run your first tool",
+                      text: "Open Bylda and run your first tool",
                       to: "/app/launchpad",
                     },
                     { icon: Zap, text: "Enable your first automation", to: "/app/automations" },

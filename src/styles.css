@@ -2144,13 +2144,13 @@ a,
   --level-10-color: #fbbf24;
 
   --planet-locked: rgba(255, 255, 255, 0.06);
-  --planet-active: #8b5cf6;
+  --planet-active: #38bdf8;
   --planet-completed: #34d399;
   --planet-mastered: #fbbf24;
 
   --module-locked: rgba(255, 255, 255, 0.04);
-  --module-available: rgba(139, 92, 246, 0.07);
-  --module-active: rgba(139, 92, 246, 0.14);
+  --module-available: rgba(56, 189, 248, 0.08);
+  --module-active: rgba(56, 189, 248, 0.16);
   --module-complete: rgba(52, 211, 153, 0.1);
   --module-mastered: rgba(251, 191, 36, 0.12);
 
@@ -2171,14 +2171,14 @@ a,
   --level-10-color: #7c3aed;
 
   --planet-locked: rgba(0, 0, 0, 0.05);
-  --planet-active: #7c3aed;
+  --planet-active: #0284c7;
   --planet-completed: #059669;
   --planet-mastered: #d97706;
 
-  --module-locked: rgba(0, 0, 0, 0.03);
-  --module-available: rgba(124, 58, 237, 0.06);
-  --module-active: rgba(124, 58, 237, 0.11);
-  --module-complete: rgba(5, 150, 105, 0.09);
+  --module-locked: rgba(15, 39, 68, 0.04);
+  --module-available: rgba(2, 132, 199, 0.06);
+  --module-active: rgba(2, 132, 199, 0.11);
+  --module-complete: rgba(5, 150, 105, 0.08);
   --module-mastered: rgba(217, 119, 6, 0.09);
 
   --intel-rail-bg: #f8f9fc;

@@ -155,11 +155,11 @@ function ModuleWorkspace() {
   }
 
   const STATE_COLOR_MAP = {
-    locked: "#4B5563",
-    available: "#9CA3AF",
-    active: "#FF6B1A",
-    complete: "#34D399",
-    mastered: "#FBBF24",
+    locked: "#7f9bb8",
+    available: "#38bdf8",
+    active: "#0284c7",
+    complete: "#0d9488",
+    mastered: "#d97706",
   };
   const stateColor = STATE_COLOR_MAP[state];
 

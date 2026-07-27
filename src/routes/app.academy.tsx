@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/lib/auth";
 import { toolRunsQuery, organizationQuery } from "@/lib/queries";
 import { ACADEMY_MODULES, getModuleState, type ModuleState } from "@/lib/academy-modules";
-import { CheckCircle2, Lock, ArrowRight, Zap } from "lucide-react";
+import { CheckCircle2, Lock, ArrowRight, Zap, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/academy")({
@@ -11,11 +11,11 @@ export const Route = createFileRoute("/app/academy")({
 });
 
 const STATE_COLORS: Record<ModuleState, string> = {
-  locked: "#4B5563",
-  available: "#9CA3AF",
-  active: "#FF6B1A",
-  complete: "#34D399",
-  mastered: "#FBBF24",
+  locked: "#7f9bb8",
+  available: "#38bdf8",
+  active: "#0284c7",
+  complete: "#0d9488",
+  mastered: "#d97706",
 };
 
 const STATE_BG: Record<ModuleState, string> = {
@@ -60,19 +60,19 @@ function AcademyLayout() {
             className="text-[9px] font-bold uppercase tracking-widest mb-1"
             style={{ color: "var(--muted-foreground)" }}
           >
-            Campaign Progress
+            Course Progress
           </div>
           <div className="flex items-center gap-2">
             <div
               className="flex-1 overflow-hidden rounded-full"
-              style={{ height: 3, background: "rgba(245,200,140,0.08)" }}
+              style={{ height: 4, background: "var(--surface-2)" }}
             >
               <div
                 className="h-full rounded-full transition-[width] duration-700"
                 style={{
                   width: `${(completedCount / ACADEMY_MODULES.length) * 100}%`,
-                  background: "linear-gradient(90deg, var(--primary), var(--accent))",
-                  boxShadow: "0 0 8px rgba(249,115,22,0.55)",
+                  background: "linear-gradient(90deg, var(--primary), var(--secondary-accent))",
+                  boxShadow: "0 0 10px color-mix(in oklab, var(--primary) 55%, transparent)",
                 }}
               />
             </div>
@@ -130,9 +130,12 @@ function AcademyLayout() {
                 </div>
               </div>
               {state === "locked" ? (
-                <Lock className="h-3 w-3 shrink-0" style={{ color: "#4B5563" }} />
+                <Lock className="h-3 w-3 shrink-0" style={{ color: STATE_COLORS.locked }} />
               ) : state === "complete" || state === "mastered" ? (
-                <CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: "#34D399" }} />
+                <CheckCircle2
+                  className="h-3.5 w-3.5 shrink-0"
+                  style={{ color: STATE_COLORS[state] }}
+                />
               ) : null}
             </Link>
           );
@@ -158,35 +161,48 @@ function AcademyIndex({
     <div className="space-y-6">
       {/* Header */}
       <div
-        className="rounded-2xl p-6 relative overflow-hidden"
+        className="rounded-2xl p-7 relative overflow-hidden glass-card"
         style={{
           background:
-            "linear-gradient(135deg, rgba(125,211,252,0.08) 0%, rgba(167,139,250,0.04) 100%)",
-          border: "1px solid rgba(125,211,252,0.14)",
+            "linear-gradient(135deg, color-mix(in oklab, var(--primary) 9%, var(--surface)) 0%, var(--surface) 70%)",
+          border: "1px solid var(--primary-border)",
         }}
       >
+        {/* soft sun-glow in the corner */}
         <div
-          className="text-[10px] font-mono font-bold uppercase tracking-widest mb-1"
-          style={{ color: "rgba(125,211,252,0.65)" }}
+          className="pointer-events-none absolute -top-16 -right-10 h-56 w-56 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, color-mix(in oklab, var(--primary) 22%, transparent) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="relative flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest mb-2"
+          style={{ color: "var(--primary)" }}
         >
-          ● Founder Academy
+          <GraduationCap className="h-3.5 w-3.5" />
+          Bylda Course
         </div>
         <h1
-          className="font-display text-[22px] font-bold mb-2"
+          className="relative font-display text-[26px] font-bold mb-2"
           style={{ color: "var(--foreground)", letterSpacing: "-0.03em" }}
         >
-          Business-Building Campaign
+          Build, launch &amp; scale your business
         </h1>
-        <p className="text-[13px] mb-4" style={{ color: "var(--muted-foreground)" }}>
-          Complete each module to unlock the next. Every lesson has a task, every task earns XP,
-          every module unlocks new capabilities.
+        <p
+          className="relative text-[13.5px] mb-5 max-w-xl leading-relaxed"
+          style={{ color: "var(--muted-foreground)" }}
+        >
+          A guided path from first idea to paying customers. Complete each module to unlock the next
+          — every lesson has a hands-on task, every task earns XP, every module unlocks new
+          capabilities.
         </p>
 
         {nextModule && (
           <Link
             to="/app/academy/$module"
             params={{ module: nextModule.module.id }}
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-semibold btn-execute"
+            className="relative inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold btn-execute"
           >
             <span>{nextModule.module.emoji}</span>
             {nextModule.state === "active" ? "Continue" : "Start"} {nextModule.module.title}

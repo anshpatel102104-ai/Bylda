@@ -113,7 +113,7 @@ function AssetsPage() {
           </p>
           <Link to="/app/launchpad">
             <Button className="mt-4 gap-2">
-              <Rocket className="h-4 w-4" /> Open Launchpad
+              <Rocket className="h-4 w-4" /> Open Bylda
             </Button>
           </Link>
         </div>

@@ -476,7 +476,7 @@ function ByldaHomePage() {
               )}
               <ul className="mt-2.5 space-y-1.5">
                 {[
-                  graph.signals.hasValidatedIdea && "Idea validated in Launchpad",
+                  graph.signals.hasValidatedIdea && "Idea validated in Bylda",
                   graph.signals.hasOffer && "Offer and pricing locked",
                   graph.signals.hasGtm && "Customer plan on file",
                   graph.signals.hasFollowupSequence && "Follow-up sequence written",

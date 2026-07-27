@@ -45,7 +45,7 @@ function HistoryPage() {
             to="/app/launchpad"
             className="inline-flex items-center gap-1.5 hover:text-foreground transition"
           >
-            <ArrowLeft className="h-3 w-3" /> Launchpad
+            <ArrowLeft className="h-3 w-3" /> Bylda
           </Link>
           <span className="text-muted-foreground/50">/</span>
           <span className="text-foreground">Run history</span>
@@ -91,7 +91,7 @@ function HistoryPage() {
           title={runs.length === 0 ? "No runs yet" : "No matching runs"}
           description={
             runs.length === 0
-              ? "Run a Launchpad tool to see your history populate here."
+              ? "Run a Bylda tool to see your history populate here."
               : "Try a different filter or status."
           }
           action={
@@ -100,7 +100,7 @@ function HistoryPage() {
                 to="/app/launchpad"
                 className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3.5 py-2 text-[12.5px] font-medium text-primary-foreground transition hover:opacity-90"
               >
-                Open Launchpad <ArrowRight className="h-3 w-3" />
+                Open Bylda <ArrowRight className="h-3 w-3" />
               </Link>
             )
           }

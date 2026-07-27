@@ -1,9 +1,10 @@
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
-import { Sparkles, Check, Eye, EyeOff } from "lucide-react";
+import { Check, Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { Logo } from "@/components/brand/Logo";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -136,12 +137,7 @@ function SignupPage() {
     <div className="min-h-screen grid lg:grid-cols-2 bg-background">
       {/* Left panel */}
       <div className="hidden lg:flex flex-col justify-between border-r border-border bg-muted/30 p-10">
-        <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <Sparkles className="h-4 w-4" />
-          </div>
-          <span className="font-display text-sm font-semibold">Launchpad Bylda</span>
-        </div>
+        <Logo />
         <div>
           <div className="text-3xl font-display font-semibold tracking-tight max-w-md">
             Build. Launch. Operate.
@@ -162,19 +158,14 @@ function SignupPage() {
             ))}
           </ul>
         </div>
-        <div className="text-xs text-muted-foreground">© Launchpad Bylda</div>
+        <div className="text-xs text-muted-foreground">© Bylda</div>
       </div>
 
       {/* Right panel */}
       <div className="flex items-center justify-center p-6 overflow-y-auto">
         <div className="w-full max-w-md py-8">
           {/* Mobile logo */}
-          <div className="flex items-center gap-2 mb-6 lg:hidden">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <Sparkles className="h-4 w-4" />
-            </div>
-            <span className="font-display text-sm font-semibold">Launchpad Bylda</span>
-          </div>
+          <Logo className="mb-6 lg:hidden" />
 
           <h1 className="text-xl font-semibold tracking-tight">Create your account</h1>
           <p className="mt-1 text-sm text-muted-foreground">

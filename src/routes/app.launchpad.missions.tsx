@@ -39,7 +39,7 @@ function MissionDetail() {
           to="/app/launchpad"
           className="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-[--text-faint] hover:text-[--foreground]"
         >
-          <ArrowLeft className="h-4 w-4" /> Back to Launchpad
+          <ArrowLeft className="h-4 w-4" /> Back to Bylda
         </Link>
 
         {mission.isLoading ? (

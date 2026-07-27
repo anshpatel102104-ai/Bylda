@@ -41,7 +41,7 @@ function byldaDirective(
     return "Automations compound your effort. Build your first follow-up sequence before leads go cold.";
   }
   if (score < 40)
-    return `Your health score is ${score}/100. Run 3 more Launchpad tools this week to build momentum at ${stage} stage.`;
+    return `Your health score is ${score}/100. Run 3 more Bylda tools this week to build momentum at ${stage} stage.`;
   if (score < 70)
     return `Building at ${stage} stage — ${runs} tools complete, health ${score}/100. ${leads === 0 ? "Adding contacts is your biggest gap right now." : "Keep your execution cadence tight."}`;
   return `Strong signal at ${stage} stage. Health score ${score}/100 — Bylda is tracking your progress.`;

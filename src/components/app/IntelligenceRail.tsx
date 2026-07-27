@@ -30,7 +30,7 @@ const PAGE_GREETINGS: Record<string, string> = {
   "/app/mission-control":
     "Hey — looking at your command center. What stage are you focused on today, and what's the highest-leverage thing I can help you move forward?",
   "/app/launchpad":
-    "You're in the Launchpad — 18 AI-powered tools to take your idea from concept to traction. Which phase are you in: validating, planning, or acquiring customers?",
+    "You're in Bylda — 18 AI-powered tools to take your idea from concept to traction. Which phase are you in: validating, planning, or acquiring customers?",
   "/app/contacts":
     "Your CRM. A clean contact list is the backbone of revenue. Need help with outreach strategy, lead scoring, or following up on cold contacts?",
   "/app/memory":

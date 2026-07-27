@@ -122,7 +122,7 @@ function FirstCustomersPage() {
             to="/app/launchpad"
             className="inline-flex items-center gap-1.5 transition hover:text-foreground"
           >
-            <ArrowLeft className="h-3 w-3" /> Launchpad
+            <ArrowLeft className="h-3 w-3" /> Bylda
           </Link>
           <span className="text-muted-foreground/50">/</span>
           <span className="text-foreground">First Customers</span>
