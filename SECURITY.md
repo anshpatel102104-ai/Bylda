@@ -41,6 +41,38 @@ Required remediation (in order):
 4. **Audit for misuse** — review Supabase logs for unexpected `service_role` access while the
    key was exposed.
 
+## Hardening applied (2026-07-27)
+
+**RLS on previously unprotected tables** — `migrations/20260727000001_rls_hardening_unprotected_tables.sql`.
+Several tables were queried directly from the browser with the anon key while
+having **no Row Level Security**, so the client-side `.eq("organization_id"/"user_id", …)`
+filters were the only isolation — trivially bypassable from devtools. This closed
+an active cross-tenant read/write exposure on `automation_configs`,
+`automation_logs`, `bylda_events`, and `notifications`, and added database-level
+policies to `tool_outputs` and `bylda_conversations` as well. `plan_entitlements_data`
+(global plan/tier reference config) is now read-only to clients. `service_role`
+has `BYPASSRLS`, so the Workers and Edge Functions are unaffected.
+
+## Recommended next (staged — needs live verification)
+
+- **Move the Cloudflare Workers off `service_role` for user data.** The user-facing
+  Workers (`bylda-contacts-api`, `bylda-ai-api`, etc.) currently query with the
+  `service_role` key and enforce isolation with an application-level
+  `user_id=eq.<sub>` filter. That works today, but a forgotten filter would leak
+  across tenants with no database backstop. The stronger design is to forward the
+  caller's JWT to PostgREST (anon key as `apikey`) and let RLS enforce isolation.
+  This was **not** applied blindly because it depends on table-level `GRANT`s to
+  the `authenticated` role that must be verified against the live database first —
+  do this behind a staging check, one worker at a time, keeping the existing filter
+  as defense-in-depth. RLS policies for the affected tables now exist (above), so
+  the database side is ready.
+- **Rate limiting / abuse protection** on the unauthenticated public endpoints
+  (`track-event`, `book-appointment`). Needs a shared store (Cloudflare KV /
+  Durable Objects) — deferred rather than shipped untested.
+- **Admin grant hardcoded in a migration** (`20260603030442…`) pins a specific user
+  as a DB-level admin with an RLS bypass. Consider managing admin grants
+  out-of-band so a personal account isn't coupled to god-mode in source.
+
 ## How user data is protected (summary)
 
 - **Auth:** Supabase Auth (JWT). The frontend uses only the anon/publishable key. Edge
