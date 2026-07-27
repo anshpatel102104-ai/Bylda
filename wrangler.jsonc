@@ -6,7 +6,7 @@
   // bylda-launchpad, reassign routes, repoint the integration — so the config
   // keeps the existing service name to deploy cleanly. User-facing brand +
   // domain (usebylda.com) are already Bylda.
-  "name": "nova-launchpad",
+  "name": "bylda",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
