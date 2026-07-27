@@ -371,9 +371,9 @@ export function ToolOutput({
 
       {/* ── Action bar — persistent bottom anchor (Chain Once) ── */}
       <div
-          className="flex flex-wrap items-center gap-2 border-t pt-4"
-          style={{ borderColor: "color-mix(in oklab, var(--border) 60%, transparent)" }}
-        >
+        className="flex flex-wrap items-center gap-2 border-t pt-4"
+        style={{ borderColor: "color-mix(in oklab, var(--border) 60%, transparent)" }}
+      >
         {primaryLaunch && (
           <Link
             to="/app/launchpad/$tool"
