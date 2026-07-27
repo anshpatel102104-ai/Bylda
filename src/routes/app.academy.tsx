@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/lib/auth";
 import { toolRunsQuery, organizationQuery } from "@/lib/queries";
 import { ACADEMY_MODULES, getModuleState, type ModuleState } from "@/lib/academy-modules";
-import { CheckCircle2, Lock, ArrowRight, Zap, GraduationCap } from "lucide-react";
+import { Lock, ArrowRight, Zap, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/academy")({
@@ -106,7 +106,25 @@ function AcademyLayout() {
                 } as React.CSSProperties
               }
             >
-              <span className="text-[16px] shrink-0">{module.emoji}</span>
+              {/* Sequenced step number — the path reads 1 → 2 → 3 at a glance */}
+              <span
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-[11px] font-bold"
+                style={{
+                  background:
+                    state === "complete" || state === "mastered"
+                      ? STATE_COLORS[state]
+                      : `color-mix(in oklab, ${STATE_COLORS[state]} 14%, var(--surface))`,
+                  color:
+                    state === "complete" || state === "mastered" ? "#fff" : STATE_COLORS[state],
+                  border:
+                    state === "complete" || state === "mastered"
+                      ? "none"
+                      : `1px solid color-mix(in oklab, ${STATE_COLORS[state]} 30%, transparent)`,
+                }}
+              >
+                {state === "complete" || state === "mastered" ? "✓" : i + 1}
+              </span>
+              <span className="text-[15px] shrink-0">{module.emoji}</span>
               <div className="min-w-0 flex-1">
                 <div
                   className="text-[11.5px] font-semibold truncate leading-tight"
@@ -131,10 +149,10 @@ function AcademyLayout() {
               </div>
               {state === "locked" ? (
                 <Lock className="h-3 w-3 shrink-0" style={{ color: STATE_COLORS.locked }} />
-              ) : state === "complete" || state === "mastered" ? (
-                <CheckCircle2
+              ) : state === "active" ? (
+                <ArrowRight
                   className="h-3.5 w-3.5 shrink-0"
-                  style={{ color: STATE_COLORS[state] }}
+                  style={{ color: STATE_COLORS.active }}
                 />
               ) : null}
             </Link>
@@ -233,6 +251,12 @@ function AcademyIndex({
               } as React.CSSProperties
             }
           >
+            <div
+              className="text-[9px] font-bold uppercase tracking-widest mb-2"
+              style={{ color: "var(--text-faint)" }}
+            >
+              Module {i + 1}
+            </div>
             <div className="flex items-start justify-between mb-3">
               <span className="text-[28px]">{module.emoji}</span>
               <div
