@@ -178,7 +178,7 @@ export function SupportWidget() {
             borderRadius: 9,
             border: "none",
             background: message.trim()
-              ? "linear-gradient(135deg, #3b82f6, #8b5cf6)"
+              ? "linear-gradient(135deg, #0284c7, #38bdf8)"
               : "var(--surface-2)",
             color: message.trim() ? "#fff" : "var(--muted-foreground)",
             fontSize: 12.5,

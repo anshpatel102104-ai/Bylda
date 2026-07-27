@@ -97,7 +97,7 @@ const STATUS_CONFIG: Record<
 > = {
   new: { bg: "rgba(107,114,128,0.12)", text: "#6B7280", dot: "#6B7280", label: "New" },
   contacted: { bg: "rgba(59,130,246,0.12)", text: "#2563EB", dot: "#3B82F6", label: "Contacted" },
-  qualified: { bg: "rgba(124,58,237,0.12)", text: "#7C3AED", dot: "#7C3AED", label: "Qualified" },
+  qualified: { bg: "rgba(2, 132, 199,0.12)", text: "#7C3AED", dot: "#7C3AED", label: "Qualified" },
   engaged: { bg: "rgba(5,150,105,0.12)", text: "#059669", dot: "#059669", label: "Engaged" },
   nurture: { bg: "rgba(217,119,6,0.12)", text: "#D97706", dot: "#D97706", label: "Nurture" },
   cold: { bg: "rgba(8,145,178,0.12)", text: "#0891B2", dot: "#0891B2", label: "Cold" },
@@ -105,7 +105,7 @@ const STATUS_CONFIG: Record<
 };
 
 const AVATAR_PALETTE = [
-  { bg: "rgba(124,58,237,0.15)", text: "#7C3AED" },
+  { bg: "rgba(2, 132, 199,0.15)", text: "#7C3AED" },
   { bg: "rgba(59,130,246,0.15)", text: "#2563EB" },
   { bg: "rgba(5,150,105,0.15)", text: "#059669" },
   { bg: "rgba(217,119,6,0.15)", text: "#D97706" },
@@ -114,7 +114,7 @@ const AVATAR_PALETTE = [
 ];
 
 const TAG_PALETTE = [
-  { bg: "rgba(124,58,237,0.10)", text: "#7C3AED" },
+  { bg: "rgba(2, 132, 199,0.10)", text: "#7C3AED" },
   { bg: "rgba(59,130,246,0.10)", text: "#2563EB" },
   { bg: "rgba(5,150,105,0.10)", text: "#059669" },
   { bg: "rgba(217,119,6,0.10)", text: "#D97706" },

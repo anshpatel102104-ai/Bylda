@@ -14,7 +14,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   blog: "#A78BFA",
   landing: "#34D399",
   email: "#FB923C",
-  pitch: "#FF6B1A",
+  pitch: "#0284c7",
   strategy: "#F5A623",
 };
 
@@ -109,15 +109,15 @@ function ScaleCampaigns() {
             >
               <div
                 className="h-4 rounded mb-3"
-                style={{ background: "rgba(245,200,140,0.08)", width: "60%" }}
+                style={{ background: "var(--surface-2)", width: "60%" }}
               />
               <div
                 className="h-3 rounded mb-2"
-                style={{ background: "rgba(245,200,140,0.06)", width: "90%" }}
+                style={{ background: "var(--surface-2)", width: "90%" }}
               />
               <div
                 className="h-3 rounded"
-                style={{ background: "rgba(245,200,140,0.06)", width: "75%" }}
+                style={{ background: "var(--surface-2)", width: "75%" }}
               />
             </div>
           ))}
@@ -126,7 +126,7 @@ function ScaleCampaigns() {
         <div
           className="rounded-2xl p-10 text-center"
           style={{
-            background: "rgba(245,200,140,0.04)",
+            background: "var(--surface-2)",
             border: "1px solid var(--border)",
           }}
         >
