@@ -203,6 +203,12 @@ function HomePage() {
         </div>
       </section>
 
+      {/* ══ Continue your course — Home ↔ Course, one click, same sky treatment ══ */}
+      <section>
+        <SectionLabel icon={GraduationCap}>Your course</SectionLabel>
+        <CourseContinueCard stageLabel={progress.current.label} />
+      </section>
+
       {/* ══ 3 · NEXT STEP — the current mission step, with its mentor's
              teaching folded into the step guidance (lessons merged into the
              execution spine — one "do this now", not two) ══ */}
@@ -432,6 +438,13 @@ function MissionHero({
     >
       {/* ambient grid */}
       <div className="bg-grid-faint pointer-events-none absolute inset-0 opacity-40" />
+      {/* soft sun-glow in the corner — the sky-island signature, shared with the course hero */}
+      <div
+        className="pointer-events-none absolute -top-20 -right-16 h-64 w-64 rounded-full"
+        style={{
+          background: `radial-gradient(circle, color-mix(in oklab, ${accent} 20%, transparent) 0%, transparent 70%)`,
+        }}
+      />
 
       <div className="relative">
         {/* stage context + live pill */}
@@ -521,10 +534,67 @@ function MissionHero({
   );
 }
 
+/* ─── Continue your course — the learning path, one click from home ─── */
+
+function CourseContinueCard({ stageLabel }: { stageLabel: string }) {
+  return (
+    <Link
+      to="/app/academy"
+      className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border p-5 transition-transform hover:-translate-y-0.5 sm:flex-row sm:items-center"
+      style={{
+        borderColor: "var(--primary-border)",
+        background:
+          "linear-gradient(135deg, color-mix(in oklab, var(--primary) 10%, var(--surface)) 0%, var(--surface) 72%)",
+      }}
+    >
+      {/* soft sun-glow — same signature as the course + mission heroes */}
+      <div
+        className="pointer-events-none absolute -top-16 -right-10 h-48 w-48 rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--primary) 20%, transparent) 0%, transparent 70%)",
+        }}
+      />
+      <span
+        className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
+        style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
+      >
+        <GraduationCap className="h-5 w-5" />
+      </span>
+      <div className="relative min-w-0 flex-1">
+        <div
+          className="text-[10px] font-bold uppercase tracking-[0.16em]"
+          style={{ color: "var(--primary)" }}
+        >
+          Bylda Course
+        </div>
+        <div className="text-[15px] font-semibold" style={{ color: "var(--foreground)" }}>
+          Continue building your business, step by step
+        </div>
+        <div className="mt-0.5 text-[12.5px]" style={{ color: "var(--muted-foreground)" }}>
+          You&apos;re on the <strong style={{ color: "var(--foreground)" }}>{stageLabel}</strong>{" "}
+          stage — pick up your next lesson and turn it into a real task.
+        </div>
+      </div>
+      <span
+        className="relative inline-flex shrink-0 items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-bold transition-transform group-hover:translate-x-0.5"
+        style={{
+          background: "var(--primary)",
+          color: "var(--primary-foreground)",
+          boxShadow: "0 6px 20px color-mix(in oklab, var(--primary) 35%, transparent)",
+        }}
+      >
+        Open your course
+        <ArrowRight className="h-4 w-4" />
+      </span>
+    </Link>
+  );
+}
+
 /* ─── Supporting tools ──────────────────────────────────────── */
 
 const SUPPORT_TOOLS = [
-  { label: "Course", to: "/app/launchpad/course", icon: GraduationCap },
+  { label: "Course", to: "/app/academy", icon: GraduationCap },
   { label: "Roadmap", to: "/app/roadmap", icon: Map },
   { label: "Research", to: "/app/research", icon: FlaskConical },
   { label: "Assets", to: "/app/assets", icon: FileText },
