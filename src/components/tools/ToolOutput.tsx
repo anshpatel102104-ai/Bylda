@@ -71,7 +71,9 @@ export interface StructuredToolOutput {
 }
 
 /** Gate: only outputs carrying the new contract render through ToolOutput. */
-export function hasStructuredOutput(o: Record<string, unknown> | null): o is StructuredToolOutput {
+export function hasStructuredOutput(
+  o: Record<string, unknown> | null,
+): o is Record<string, unknown> & StructuredToolOutput {
   if (!o) return false;
   const v = o.verdict as Verdict | undefined;
   return !!v && typeof v.label === "string" && !!(o.guidance || o.chips || o.drawers);
@@ -368,36 +370,34 @@ export function ToolOutput({
       )}
 
       {/* ── Action bar — persistent bottom anchor (Chain Once) ── */}
-      {(primaryLaunch || true) && (
-        <div
+      <div
           className="flex flex-wrap items-center gap-2 border-t pt-4"
           style={{ borderColor: "color-mix(in oklab, var(--border) 60%, transparent)" }}
         >
-          {primaryLaunch && (
-            <Link
-              to="/app/launchpad/$tool"
-              params={{ tool: primaryLaunch.slug }}
-              search={launchSearch}
-              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-semibold text-white transition hover:opacity-90"
-              style={{ background: "var(--primary)" }}
-            >
-              {primaryLaunch.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          )}
+        {primaryLaunch && (
           <Link
-            to="/app/mentor"
-            className="inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-[12.5px] font-medium transition hover:opacity-100"
-            style={{
-              borderColor: "var(--border)",
-              background: "var(--surface)",
-              color: "var(--muted-foreground)",
-              opacity: 0.9,
-            }}
+            to="/app/launchpad/$tool"
+            params={{ tool: primaryLaunch.slug }}
+            search={launchSearch}
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-semibold text-white transition hover:opacity-90"
+            style={{ background: "var(--primary)" }}
           >
-            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Ask Bylda why
+            {primaryLaunch.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
-        </div>
-      )}
+        )}
+        <Link
+          to="/app/mentor"
+          className="inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-[12.5px] font-medium transition hover:opacity-100"
+          style={{
+            borderColor: "var(--border)",
+            background: "var(--surface)",
+            color: "var(--muted-foreground)",
+            opacity: 0.9,
+          }}
+        >
+          <Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Ask Bylda why
+        </Link>
+      </div>
     </div>
   );
 }
@@ -439,24 +439,23 @@ function VerdictBlock({ verdict }: { verdict: Verdict }) {
             transform="rotate(-90 30 30)"
             className="transition-all duration-700 ease-out motion-reduce:transition-none"
           />
-          <text
-            x="30"
-            y="34"
-            textAnchor="middle"
-            fontSize="15"
-            fontWeight="700"
-            fill={color}
-          >
+          <text x="30" y="34" textAnchor="middle" fontSize="15" fontWeight="700" fill={color}>
             {score}
           </text>
         </svg>
       )}
       <div className="min-w-0">
-        <div className="text-[17px] font-extrabold leading-tight" style={{ color: "var(--foreground)" }}>
+        <div
+          className="text-[17px] font-extrabold leading-tight"
+          style={{ color: "var(--foreground)" }}
+        >
           {verdict.label}
         </div>
         {verdict.detail && (
-          <p className="mt-1 text-[12.5px] leading-relaxed" style={{ color: "var(--muted-foreground)" }}>
+          <p
+            className="mt-1 text-[12.5px] leading-relaxed"
+            style={{ color: "var(--muted-foreground)" }}
+          >
             {verdict.detail}
           </p>
         )}
@@ -488,7 +487,9 @@ function OutputDrawer({
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         className="flex w-full items-center gap-2.5 px-4 py-3 text-left transition-colors"
-        style={{ background: open ? `color-mix(in oklab, ${tone} 6%, var(--surface))` : "var(--surface)" }}
+        style={{
+          background: open ? `color-mix(in oklab, ${tone} 6%, var(--surface))` : "var(--surface)",
+        }}
       >
         <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: tone }} aria-hidden="true" />
         <span className="flex-1 text-[12.5px] font-semibold" style={{ color: "var(--foreground)" }}>
