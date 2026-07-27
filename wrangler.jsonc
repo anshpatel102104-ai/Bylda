@@ -1,12 +1,13 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  // The deployed Cloudflare Worker service is still named "nova-launchpad" and
-  // owns the usebylda.com routes (a Workers Build Git-integration is pinned to
-  // it). Renaming the service requires manual Cloudflare steps — create
-  // bylda-launchpad, reassign routes, repoint the integration — so the config
-  // keeps the existing service name to deploy cleanly. User-facing brand +
-  // domain (usebylda.com) are already Bylda.
-  "name": "nova-launchpad",
+  // The production Worker that owns the usebylda.com routes is "bylda"
+  // (app.usebylda.com/* and usebylda.com/*). `wrangler deploy` must target that
+  // same service, otherwise Cloudflare rejects the deploy with "Can't deploy
+  // routes that are assigned to another worker" — which is exactly what happened
+  // while this was named "nova-launchpad" (a different, route-less worker).
+  // Deploying "bylda" updates the live worker in place, so the routes it already
+  // owns match the config and the deploy succeeds.
+  "name": "bylda",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
