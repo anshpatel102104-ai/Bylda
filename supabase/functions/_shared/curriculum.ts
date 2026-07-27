@@ -15,7 +15,13 @@ export type OutputFormat =
   | "intelligence-report"
   | "step-plan"
   | "pipeline-snapshot";
-export type BusinessModel = "agency" | "consultant" | "service" | "sales-team" | "software";
+export type BusinessModel =
+  | "agency"
+  | "consultant"
+  | "service"
+  | "sales-team"
+  | "software"
+  | "ecommerce";
 
 export const STAGE_ORDER: Stage[] = ["Idea", "Validate", "Launch", "Operate", "Scale"];
 
@@ -165,6 +171,12 @@ export function classifyBusinessModel(signals: {
     return "agency";
   if (/(consult|advisor|advisory|coach|coaching|fractional|freelanc)/.test(text))
     return "consultant";
+  if (
+    /(e-?commerce|ecom|shopify|dropship|online store|storefront|d2c|dtc|physical product|amazon fba|print on demand|\bpod\b|sell products online|merch)/.test(
+      text,
+    )
+  )
+    return "ecommerce";
   if (/(saas|software|app\b|platform|api\b|developer|subscription product|b2b tool)/.test(text))
     return "software";
   if (/(sales team|sdr|bdr|outbound team|cold call|closing team|commission)/.test(text))
@@ -316,6 +328,22 @@ const MODEL_OPENERS: Record<BusinessModel, LessonTemplate[]> = {
       toolKey: "sales-script",
       summary:
         "Mo. We set the rules for what a real lead looks like, so your pipeline stops filling with maybes.",
+    },
+  ],
+  ecommerce: [
+    {
+      stage: "Validate",
+      title: "Pick the product niche you'll win",
+      toolKey: "niche-scorer",
+      summary:
+        "Dhruv. E-commerce lives or dies on product-market fit. We score a few product niches and commit to the one with real demand and room to profit.",
+    },
+    {
+      stage: "Launch",
+      title: "Build the store page that sells",
+      toolKey: "landing-page-creator",
+      summary:
+        "James. One clean product page — a clear promise, real photos, one buy button. We build it step by step so browsers become buyers.",
     },
   ],
   software: [

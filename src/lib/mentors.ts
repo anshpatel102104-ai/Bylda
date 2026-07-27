@@ -14,7 +14,13 @@ export type OutputFormat =
   | "intelligence-report"
   | "step-plan"
   | "pipeline-snapshot";
-export type BusinessModel = "agency" | "consultant" | "service" | "sales-team" | "software";
+export type BusinessModel =
+  | "agency"
+  | "consultant"
+  | "service"
+  | "sales-team"
+  | "software"
+  | "ecommerce";
 
 export const CURRICULUM_STAGES: CurriculumStage[] = [
   "Idea",
@@ -246,6 +252,7 @@ export const BUSINESS_MODEL_LABELS: Record<BusinessModel, string> = {
   service: "Service business",
   "sales-team": "Sales team",
   software: "Software business",
+  ecommerce: "E-commerce store",
 };
 
 /** A row from playbook_lessons, as the frontend consumes it. */
