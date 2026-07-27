@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { Logo } from "@/components/brand/Logo";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth/sign-in")({ component: SignIn });
@@ -82,14 +83,7 @@ export function AuthShell({
 
       {/* Left: brand statement */}
       <div className="relative hidden lg:flex flex-col justify-between border-r border-border p-12 bg-grid-faint">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-primary text-white font-display font-bold text-[14px] glow-primary">
-            LN
-          </div>
-          <span className="font-display text-[15px] font-semibold tracking-tight">
-            LaunchpadBYLDA
-          </span>
-        </div>
+        <Logo className="[&_span]:text-[15px] [&_span]:tracking-tight" />
 
         <div className="max-w-lg">
           <h2 className="font-display text-[clamp(2.5rem,4vw,3.75rem)] font-semibold leading-[1.05] tracking-tight">
@@ -110,20 +104,13 @@ export function AuthShell({
           </div>
         </div>
 
-        <div className="text-[11px] text-muted-foreground">
-          © LaunchpadBYLDA · Built for founders
-        </div>
+        <div className="text-[11px] text-muted-foreground">© Bylda · Built for founders</div>
       </div>
 
       {/* Right: form card */}
       <div className="relative flex items-center justify-center p-6 sm:p-10">
         <div className="w-full max-w-[400px]">
-          <div className="lg:hidden mb-8 flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-primary text-white font-bold text-[13px]">
-              LN
-            </div>
-            <span className="font-display text-[15px] font-semibold">LaunchpadBYLDA</span>
-          </div>
+          <Logo className="lg:hidden mb-8 [&_span]:text-[15px]" />
           <h1 className="font-display text-[26px] font-semibold tracking-tight">{title}</h1>
           <p className="mt-1.5 text-[13.5px] text-muted-foreground">{subtitle}</p>
           <div className="mt-7">{children}</div>

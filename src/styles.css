@@ -112,12 +112,10 @@
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05);
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.08), 0 12px 32px rgba(0, 0, 0, 0.06);
-  --shadow-lifted: 0 8px 16px rgba(0, 0, 0, 0.08), 0 24px 48px rgba(0, 0, 0, 0.06);
-  --shadow-glow-primary:
-    0 0 0 1px rgba(124, 58, 237, 0.18), 0 4px 24px rgba(124, 58, 237, 0.12),
-    0 0 48px rgba(124, 58, 237, 0.05);
-  --shadow-glow-secondary: 0 0 0 1px rgba(124, 58, 237, 0.14), 0 4px 24px rgba(124, 58, 237, 0.08);
+  --shadow-hover: 0 4px 10px rgba(15, 39, 68, 0.06), 0 14px 30px rgba(15, 39, 68, 0.07);
+  --shadow-lifted: 0 8px 16px rgba(15, 39, 68, 0.07), 0 24px 48px rgba(15, 39, 68, 0.06);
+  --shadow-glow-primary: 0 1px 2px rgba(15, 39, 68, 0.05), 0 10px 26px rgba(2, 132, 199, 0.09);
+  --shadow-glow-secondary: 0 1px 2px rgba(15, 39, 68, 0.05), 0 8px 22px rgba(2, 132, 199, 0.07);
   --shadow-glow-cyan: 0 0 0 1px rgba(6, 182, 212, 0.22), 0 4px 24px rgba(6, 182, 212, 0.14);
   --shadow-glow-orange: 0 0 0 1px rgba(245, 158, 11, 0.2), 0 4px 24px rgba(245, 158, 11, 0.12);
   --shadow-glow-mentor: 0 0 0 1px rgba(5, 150, 105, 0.2), 0 4px 24px rgba(5, 150, 105, 0.12);
@@ -466,10 +464,9 @@
     /* Daytime-sky canvas: azure at the top, hazy horizon below, a couple of
        soft sun-lit clouds. Fixed so the sky sits behind everything as you scroll. */
     background-image:
-      radial-gradient(120% 60% at 78% -10%, rgba(56, 189, 248, 0.16) 0%, transparent 60%),
-      radial-gradient(90% 50% at 12% 0%, rgba(125, 211, 252, 0.14) 0%, transparent 55%),
-      radial-gradient(60% 40% at 50% 120%, rgba(2, 132, 199, 0.08) 0%, transparent 60%),
-      linear-gradient(180deg, #dff0ff 0%, var(--background) 42%);
+      radial-gradient(100% 55% at 84% -20%, rgba(56, 189, 248, 0.08) 0%, transparent 55%),
+      radial-gradient(80% 45% at 6% -12%, rgba(125, 211, 252, 0.06) 0%, transparent 50%),
+      linear-gradient(180deg, #f4f9ff 0%, var(--background) 34%);
     background-attachment: fixed;
     background-repeat: no-repeat;
     color: var(--foreground);
@@ -692,8 +689,8 @@
   }
 
   .neon-card:hover {
-    border-color: var(--border-strong);
-    box-shadow: var(--shadow-glow-primary), var(--shadow-hover);
+    border-color: var(--primary-border);
+    box-shadow: var(--shadow-hover);
   }
 
   .light .neon-card {
@@ -704,16 +701,14 @@
 
   .light .neon-card:hover {
     border-color: var(--primary-border);
-    box-shadow:
-      var(--shadow-hover),
-      0 0 0 1px rgba(124, 58, 237, 0.1);
+    box-shadow: var(--shadow-hover);
   }
 
   /* Inner highlight */
   .inner-glow {
     box-shadow:
-      inset 0 1px 0 rgba(124, 58, 237, 0.08),
-      inset 0 0 28px rgba(124, 58, 237, 0.03);
+      inset 0 1px 0 rgba(2, 132, 199, 0.08),
+      inset 0 0 28px rgba(2, 132, 199, 0.03);
   }
 
   /* ── Mentor panel ── */
@@ -760,14 +755,14 @@
   /* ── Brand gradients (kept for backward compat) ── */
   .text-gradient,
   .text-gradient-brand {
-    background: linear-gradient(110deg, #7c3aed 0%, #3b82f6 100%);
+    background: linear-gradient(110deg, #0284c7 0%, #38bdf8 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   .dark .text-gradient,
   .dark .text-gradient-brand {
-    background: linear-gradient(110deg, #8b5cf6 0%, #60a5fa 100%);
+    background: linear-gradient(110deg, #38bdf8 0%, #7dd3fc 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -788,10 +783,10 @@
     background: var(--primary);
   }
   .bg-gradient-neon {
-    background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 50%, #3b82f6 100%);
+    background: linear-gradient(135deg, #075985 0%, #0284c7 50%, #38bdf8 100%);
   }
   .dark .bg-gradient-neon {
-    background: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 50%, #60a5fa 100%);
+    background: linear-gradient(135deg, #0369a1 0%, #0ea5e9 50%, #7dd3fc 100%);
   }
   .bg-gradient-energy {
     background: var(--gradient-1);
@@ -800,13 +795,13 @@
   /* ── Ambient mesh backgrounds ── */
   .bg-gradient-mesh {
     background:
-      radial-gradient(60rem 40rem at 0% 0%, rgba(124, 58, 237, 0.06), transparent 60%),
+      radial-gradient(60rem 40rem at 0% 0%, rgba(2, 132, 199, 0.06), transparent 60%),
       radial-gradient(50rem 36rem at 100% 0%, rgba(59, 130, 246, 0.04), transparent 60%),
       radial-gradient(48rem 32rem at 50% 100%, rgba(16, 185, 129, 0.03), transparent 60%);
   }
   .dark .bg-gradient-mesh {
     background:
-      radial-gradient(60rem 40rem at 0% 0%, rgba(139, 92, 246, 0.1), transparent 60%),
+      radial-gradient(60rem 40rem at 0% 0%, rgba(56, 189, 248, 0.1), transparent 60%),
       radial-gradient(50rem 36rem at 100% 0%, rgba(96, 165, 250, 0.06), transparent 60%),
       radial-gradient(48rem 32rem at 50% 100%, rgba(52, 211, 153, 0.04), transparent 60%);
   }
@@ -871,15 +866,15 @@
   .neon-border {
     border: 1px solid var(--border-strong);
     box-shadow:
-      0 0 10px rgba(124, 58, 237, 0.14),
-      inset 0 0 10px rgba(124, 58, 237, 0.05);
+      0 0 10px rgba(2, 132, 199, 0.14),
+      inset 0 0 10px rgba(2, 132, 199, 0.05);
   }
   .light .neon-border {
-    border: 1px solid rgba(124, 58, 237, 0.25);
-    box-shadow: 0 0 8px rgba(124, 58, 237, 0.08);
+    border: 1px solid rgba(2, 132, 199, 0.25);
+    box-shadow: 0 0 8px rgba(2, 132, 199, 0.08);
   }
   .glow-border {
-    box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.35);
+    box-shadow: 0 0 0 1px rgba(2, 132, 199, 0.35);
   }
 
   /* ── Skeleton shimmer ── */
@@ -965,7 +960,7 @@
   }
   .card-lift:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-glow-primary), var(--shadow-hover);
+    box-shadow: var(--shadow-hover);
     border-color: var(--primary-border);
   }
 
@@ -977,7 +972,7 @@
   }
   .card-glow:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-glow-primary), var(--shadow-hover);
+    box-shadow: var(--shadow-hover);
     border-color: var(--primary-border);
   }
 
@@ -1006,7 +1001,7 @@
   }
   .tactical-card:hover {
     border-color: var(--primary-border);
-    box-shadow: var(--shadow-glow-primary), var(--shadow-hover);
+    box-shadow: var(--shadow-hover);
   }
 
   /* ── Status badge ── */
@@ -1063,7 +1058,7 @@
     height: 100%;
     background: var(--primary);
     border-radius: 999px;
-    box-shadow: 0 0 6px rgba(124, 58, 237, 0.45);
+    box-shadow: 0 0 6px rgba(2, 132, 199, 0.45);
     transition: width 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -1083,13 +1078,13 @@
   .boot-grid {
     background-color: var(--background);
     background-image:
-      radial-gradient(60rem 36rem at 50% -10%, rgba(124, 58, 237, 0.08), transparent 60%),
+      radial-gradient(60rem 36rem at 50% -10%, rgba(2, 132, 199, 0.08), transparent 60%),
       radial-gradient(48rem 30rem at 90% 110%, rgba(59, 130, 246, 0.05), transparent 60%);
   }
   .dark .boot-grid {
     background-color: var(--background);
     background-image:
-      radial-gradient(60rem 36rem at 50% -10%, rgba(139, 92, 246, 0.12), transparent 60%),
+      radial-gradient(60rem 36rem at 50% -10%, rgba(56, 189, 248, 0.12), transparent 60%),
       radial-gradient(48rem 30rem at 90% 110%, rgba(96, 165, 250, 0.06), transparent 60%);
   }
 
@@ -1121,11 +1116,11 @@
       box-shadow 160ms,
       transform 160ms,
       background-color 160ms;
-    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.28);
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.28);
   }
   .btn-execute:hover {
     background: var(--primary-hover);
-    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+    box-shadow: 0 4px 20px rgba(2, 132, 199, 0.4);
     transform: translateY(-1px);
   }
   .btn-execute:active {
@@ -1163,17 +1158,16 @@
     height: 2px;
     background: var(--primary);
     border-radius: 999px;
-    box-shadow: 0 0 6px rgba(124, 58, 237, 0.55);
+    box-shadow: 0 0 6px rgba(2, 132, 199, 0.55);
   }
 
   /* ── Icon glow ── */
   .icon-glow {
-    filter: drop-shadow(0 0 5px rgba(124, 58, 237, 0.55))
-      drop-shadow(0 0 10px rgba(124, 58, 237, 0.28));
+    filter: drop-shadow(0 0 5px rgba(2, 132, 199, 0.55))
+      drop-shadow(0 0 10px rgba(2, 132, 199, 0.28));
   }
   .icon-glow-violet {
-    filter: drop-shadow(0 0 5px rgba(124, 58, 237, 0.6))
-      drop-shadow(0 0 10px rgba(124, 58, 237, 0.3));
+    filter: drop-shadow(0 0 5px rgba(2, 132, 199, 0.6)) drop-shadow(0 0 10px rgba(2, 132, 199, 0.3));
   }
   .icon-glow-mentor {
     filter: drop-shadow(0 0 5px rgba(5, 150, 105, 0.55))
@@ -1184,12 +1178,12 @@
   .neon-progress {
     background: var(--primary);
     box-shadow:
-      0 0 10px rgba(124, 58, 237, 0.45),
-      0 0 20px rgba(124, 58, 237, 0.2);
+      0 0 10px rgba(2, 132, 199, 0.45),
+      0 0 20px rgba(2, 132, 199, 0.2);
   }
   .dark .neon-progress {
     background: var(--primary);
-    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
   }
 
   /* ── Trajectory indicator ── */
@@ -1411,7 +1405,7 @@
 }
 .bg-gradient-mesh-animated {
   background:
-    radial-gradient(60rem 40rem at 0% 0%, rgba(124, 58, 237, 0.08), transparent 60%),
+    radial-gradient(60rem 40rem at 0% 0%, rgba(2, 132, 199, 0.08), transparent 60%),
     radial-gradient(50rem 36rem at 100% 0%, rgba(59, 130, 246, 0.05), transparent 60%),
     radial-gradient(48rem 32rem at 50% 100%, rgba(16, 185, 129, 0.04), transparent 60%);
   background-size:
@@ -1494,11 +1488,11 @@
   0%,
   100% {
     opacity: 0.5;
-    box-shadow: 0 0 10px rgba(124, 58, 237, 0.18);
+    box-shadow: 0 0 10px rgba(2, 132, 199, 0.18);
   }
   50% {
     opacity: 1;
-    box-shadow: 0 0 18px rgba(124, 58, 237, 0.4);
+    box-shadow: 0 0 18px rgba(2, 132, 199, 0.4);
   }
 }
 .breath-glow {
@@ -2144,13 +2138,13 @@ a,
   --level-10-color: #fbbf24;
 
   --planet-locked: rgba(255, 255, 255, 0.06);
-  --planet-active: #8b5cf6;
+  --planet-active: #38bdf8;
   --planet-completed: #34d399;
   --planet-mastered: #fbbf24;
 
   --module-locked: rgba(255, 255, 255, 0.04);
-  --module-available: rgba(139, 92, 246, 0.07);
-  --module-active: rgba(139, 92, 246, 0.14);
+  --module-available: rgba(56, 189, 248, 0.08);
+  --module-active: rgba(56, 189, 248, 0.16);
   --module-complete: rgba(52, 211, 153, 0.1);
   --module-mastered: rgba(251, 191, 36, 0.12);
 
@@ -2171,14 +2165,14 @@ a,
   --level-10-color: #7c3aed;
 
   --planet-locked: rgba(0, 0, 0, 0.05);
-  --planet-active: #7c3aed;
+  --planet-active: #0284c7;
   --planet-completed: #059669;
   --planet-mastered: #d97706;
 
-  --module-locked: rgba(0, 0, 0, 0.03);
-  --module-available: rgba(124, 58, 237, 0.06);
-  --module-active: rgba(124, 58, 237, 0.11);
-  --module-complete: rgba(5, 150, 105, 0.09);
+  --module-locked: rgba(15, 39, 68, 0.04);
+  --module-available: rgba(2, 132, 199, 0.06);
+  --module-active: rgba(2, 132, 199, 0.11);
+  --module-complete: rgba(5, 150, 105, 0.08);
   --module-mastered: rgba(217, 119, 6, 0.09);
 
   --intel-rail-bg: #f8f9fc;
@@ -2264,10 +2258,10 @@ a,
     text-decoration: none;
   }
   .mode-nav-item.active {
-    background: rgba(124, 58, 237, 0.09);
+    background: rgba(2, 132, 199, 0.09);
   }
   .mode-nav-item:not(.active):hover {
-    background: rgba(124, 58, 237, 0.05);
+    background: rgba(2, 132, 199, 0.05);
   }
 }
 
@@ -2351,7 +2345,7 @@ a,
   height: 100%;
   border-radius: 999px;
   background: var(--primary);
-  box-shadow: 0 0 8px rgba(124, 58, 237, 0.45);
+  box-shadow: 0 0 8px rgba(2, 132, 199, 0.45);
   transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 

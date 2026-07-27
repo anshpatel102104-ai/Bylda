@@ -20,7 +20,7 @@ type Spark = {
   alpha: number;
 };
 
-const COLORS = ["#3b82f6", "#6366f1", "#8b5cf6", "#06b6d4", "#a78bfa"];
+const COLORS = ["#38bdf8", "#7dd3fc", "#0ea5e9", "#22d3ee", "#60a5fa"];
 
 export function NeuralCanvas({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);

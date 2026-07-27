@@ -152,7 +152,7 @@ const DEFAULT_SETTINGS: CRMSettings = {
 const STAGE_CONFIG: Record<Stage, { color: string; bg: string; text: string }> = {
   New: { color: "#6B7280", bg: "rgba(107,114,128,0.10)", text: "#374151" },
   Contacted: { color: "#3B82F6", bg: "rgba(59,130,246,0.10)", text: "#1D4ED8" },
-  Qualified: { color: "#7C3AED", bg: "rgba(124,58,237,0.10)", text: "#5B21B6" },
+  Qualified: { color: "#7C3AED", bg: "rgba(2, 132, 199,0.10)", text: "#5B21B6" },
   Proposal: { color: "#D97706", bg: "rgba(217,119,6,0.10)", text: "#92400E" },
   Won: { color: "#059669", bg: "rgba(5,150,105,0.10)", text: "#065F46" },
   Lost: { color: "#DC2626", bg: "rgba(220,38,38,0.10)", text: "#991B1B" },

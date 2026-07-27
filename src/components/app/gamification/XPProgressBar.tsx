@@ -59,7 +59,7 @@ export function XPProgressBar({
         className="relative overflow-hidden rounded-full"
         style={{
           height,
-          background: "rgba(245,200,140,0.08)",
+          background: "var(--surface-2)",
         }}
       >
         <div
@@ -68,7 +68,7 @@ export function XPProgressBar({
           style={{
             width: animate ? "0%" : `${percent}%`,
             background: "linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%)",
-            boxShadow: "0 0 8px rgba(249,115,22,0.55)",
+            boxShadow: "0 0 8px color-mix(in oklab, var(--primary) 45%, transparent)",
             transition: animate ? undefined : "width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)",
           }}
         />

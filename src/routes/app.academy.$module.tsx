@@ -17,6 +17,7 @@ import {
   CheckCircle2,
   Lock,
   ArrowRight,
+  ArrowLeft,
   Zap,
   BookOpen,
   Play,
@@ -130,6 +131,15 @@ function ModuleWorkspace() {
   const buildSteps = getBuildSteps(module.id, archetype);
   const businessLabel = ARCHETYPE_LABELS[archetype];
 
+  // "Where am I / what's next" — the single obvious action for this module.
+  const moduleNumber = moduleIndex + 1;
+  const totalModules = ACADEMY_MODULES.length;
+  const firstIncompleteTool = module.tools.find((t) => !completedSlugs.has(t));
+  const nextToolLabel = firstIncompleteTool
+    ? (TOOL_LABELS[firstIncompleteTool] ??
+      firstIncompleteTool.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()))
+    : null;
+
   if (state === "locked") {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -155,16 +165,38 @@ function ModuleWorkspace() {
   }
 
   const STATE_COLOR_MAP = {
-    locked: "#4B5563",
-    available: "#9CA3AF",
-    active: "#FF6B1A",
-    complete: "#34D399",
-    mastered: "#FBBF24",
+    locked: "#7f9bb8",
+    available: "#38bdf8",
+    active: "#0284c7",
+    complete: "#0d9488",
+    mastered: "#d97706",
   };
   const stateColor = STATE_COLOR_MAP[state];
 
   return (
     <div className="space-y-6">
+      {/* Breadcrumb — always know exactly where you are */}
+      <div className="flex items-center gap-2 text-[12px]">
+        <Link
+          to="/app/academy"
+          className="inline-flex items-center gap-1 font-medium transition-colors hover:opacity-80"
+          style={{ color: "var(--muted-foreground)" }}
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Course
+        </Link>
+        <span style={{ color: "var(--text-faint)" }}>/</span>
+        <span
+          className="rounded-full px-2 py-0.5 text-[10.5px] font-bold"
+          style={{ background: "var(--primary-soft)", color: "var(--primary)" }}
+        >
+          Module {moduleNumber} of {totalModules}
+        </span>
+        <span className="font-semibold truncate" style={{ color: "var(--foreground)" }}>
+          {module.title}
+        </span>
+      </div>
+
       {/* Module header */}
       <div
         className="rounded-2xl p-6 relative overflow-hidden"
@@ -231,7 +263,7 @@ function ModuleWorkspace() {
             </div>
             <div
               className="rounded-full overflow-hidden"
-              style={{ height: 4, background: "rgba(245,200,140,0.08)" }}
+              style={{ height: 4, background: "var(--surface-2)" }}
             >
               <div
                 className="h-full rounded-full transition-[width] duration-700"
@@ -245,6 +277,91 @@ function ModuleWorkspace() {
           </div>
         )}
       </div>
+
+      {/* Your next step — one clear action, so it's always obvious what to do now */}
+      {firstIncompleteTool ? (
+        <div
+          className="rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-4 relative overflow-hidden"
+          style={{
+            background:
+              "linear-gradient(135deg, color-mix(in oklab, var(--primary) 12%, var(--surface)) 0%, var(--surface) 75%)",
+            border: "1px solid var(--primary-border)",
+          }}
+        >
+          <div
+            className="pointer-events-none absolute -top-12 -right-8 h-40 w-40 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle, color-mix(in oklab, var(--primary) 15%, transparent) 0%, transparent 70%)",
+            }}
+          />
+          <div
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
+            style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
+          >
+            <Play className="h-5 w-5" />
+          </div>
+          <div className="relative flex-1 min-w-0">
+            <div
+              className="text-[10px] font-bold uppercase tracking-widest mb-0.5"
+              style={{ color: "var(--primary)" }}
+            >
+              Your next step
+            </div>
+            <div className="text-[15px] font-semibold" style={{ color: "var(--foreground)" }}>
+              Run {nextToolLabel} for your {businessLabel}
+            </div>
+            <div className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>
+              Task {completedTools.length + 1} of {module.tools.length} · takes a few minutes
+            </div>
+          </div>
+          <Link
+            to="/app/launchpad/$tool"
+            params={{ tool: firstIncompleteTool }}
+            className="relative inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold btn-execute shrink-0"
+          >
+            <Play className="h-4 w-4" />
+            Start now
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      ) : (
+        <div
+          className="rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-4"
+          style={{
+            background: "color-mix(in oklab, var(--success) 8%, var(--surface))",
+            border: "1px solid color-mix(in oklab, var(--success) 28%, var(--border))",
+          }}
+        >
+          <div
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
+            style={{ background: "var(--success)", color: "#fff" }}
+          >
+            <CheckCircle2 className="h-5 w-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div
+              className="text-[10px] font-bold uppercase tracking-widest mb-0.5"
+              style={{ color: "var(--success)" }}
+            >
+              Module complete
+            </div>
+            <div className="text-[15px] font-semibold" style={{ color: "var(--foreground)" }}>
+              You&apos;ve finished {module.title} — nice work.
+            </div>
+          </div>
+          {nextModule && (
+            <Link
+              to="/app/academy/$module"
+              params={{ module: nextModule.id }}
+              className="inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold btn-execute shrink-0"
+            >
+              Next: {nextModule.title}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          )}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* LEFT: Learn content */}
@@ -392,10 +509,10 @@ function ModuleWorkspace() {
                     className="flex items-center gap-3 rounded-xl p-4 bylda-card transition-all"
                     style={{
                       borderColor: isDone
-                        ? "color-mix(in oklab, #34D399 28%, var(--border))"
+                        ? "color-mix(in oklab, var(--success) 28%, var(--border))"
                         : undefined,
                       background: isDone
-                        ? "color-mix(in oklab, #34D399 5%, var(--surface))"
+                        ? "color-mix(in oklab, var(--success) 5%, var(--surface))"
                         : undefined,
                     }}
                   >
@@ -403,9 +520,9 @@ function ModuleWorkspace() {
                       className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-mono font-bold text-[12px]"
                       style={{
                         background: isDone
-                          ? "color-mix(in oklab, #34D399 15%, transparent)"
-                          : "rgba(245,200,140,0.06)",
-                        color: isDone ? "#34D399" : "var(--muted-foreground)",
+                          ? "color-mix(in oklab, var(--success) 15%, transparent)"
+                          : "var(--surface-2)",
+                        color: isDone ? "var(--success)" : "var(--muted-foreground)",
                       }}
                     >
                       {isDone ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
@@ -414,7 +531,7 @@ function ModuleWorkspace() {
                     <div className="flex-1 min-w-0">
                       <div
                         className="text-[13px] font-semibold"
-                        style={{ color: isDone ? "#34D399" : "var(--foreground)" }}
+                        style={{ color: isDone ? "var(--success)" : "var(--foreground)" }}
                       >
                         {label}
                       </div>
@@ -473,7 +590,7 @@ function ModuleWorkspace() {
                   <div key={toolKey} className="flex items-center gap-2.5">
                     <div
                       className="h-2 w-2 rounded-full shrink-0"
-                      style={{ background: isDone ? "#34D399" : "rgba(245,200,140,0.18)" }}
+                      style={{ background: isDone ? "var(--success)" : "var(--border)" }}
                     />
                     <span
                       className="text-[12px] truncate"
@@ -484,7 +601,7 @@ function ModuleWorkspace() {
                     {isDone && (
                       <CheckCircle2
                         className="h-3 w-3 shrink-0 ml-auto"
-                        style={{ color: "#34D399" }}
+                        style={{ color: "var(--success)" }}
                       />
                     )}
                   </div>
@@ -496,12 +613,15 @@ function ModuleWorkspace() {
               <div
                 className="mt-4 rounded-xl p-3 text-center"
                 style={{
-                  background: "color-mix(in oklab, #34D399 8%, transparent)",
-                  border: "1px solid color-mix(in oklab, #34D399 25%, transparent)",
+                  background: "color-mix(in oklab, var(--success) 8%, transparent)",
+                  border: "1px solid color-mix(in oklab, var(--success) 25%, transparent)",
                 }}
               >
-                <CheckCircle2 className="h-5 w-5 mx-auto mb-1.5" style={{ color: "#34D399" }} />
-                <div className="text-[12px] font-semibold" style={{ color: "#34D399" }}>
+                <CheckCircle2
+                  className="h-5 w-5 mx-auto mb-1.5"
+                  style={{ color: "var(--success)" }}
+                />
+                <div className="text-[12px] font-semibold" style={{ color: "var(--success)" }}>
                   Module Complete!
                 </div>
                 <div className="text-[11px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>
@@ -516,7 +636,7 @@ function ModuleWorkspace() {
             <div
               className="rounded-xl p-4"
               style={{
-                background: "rgba(245,200,140,0.04)",
+                background: "var(--surface-2)",
                 border: "1px solid var(--border)",
               }}
             >

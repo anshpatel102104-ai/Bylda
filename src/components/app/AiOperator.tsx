@@ -174,7 +174,7 @@ const STATIC_PAGES: Item[] = [
   {
     id: "p-launchpad",
     group: "Page",
-    label: "Launchpad",
+    label: "Bylda",
     icon: Rocket,
     to: "/app/launchpad",
     match: /launchpad|tools/i,

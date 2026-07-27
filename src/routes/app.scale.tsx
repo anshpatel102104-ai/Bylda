@@ -70,7 +70,7 @@ const SCALE_MODES = [
     label: "AI Operators",
     desc: "Bylda mentor & AI coaching",
     icon: Bot,
-    color: "#FF6B1A",
+    color: "#0284c7",
     to: "/app/mentor",
     minStage: "Idea",
   },
@@ -255,7 +255,7 @@ function ScaleIndex({ orgStage, stageIdx }: { orgStage: string; stageIdx: number
         <div
           className="rounded-xl p-5 text-center"
           style={{
-            background: "rgba(245,200,140,0.04)",
+            background: "var(--surface-2)",
             border: "1px solid var(--border)",
           }}
         >

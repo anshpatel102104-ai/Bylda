@@ -36,6 +36,7 @@ import {
   Users,
   Building2,
   GraduationCap,
+  Compass,
   type LucideIcon,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -86,6 +87,13 @@ const HOME_OPERATE: NavItem = {
 
 const PRIMARY_NAV: NavItem[] = [
   {
+    id: "course",
+    label: "Course",
+    to: "/app/academy",
+    icon: GraduationCap,
+    match: (p) => p.startsWith("/app/academy"),
+  },
+  {
     id: "roadmap",
     label: "Roadmap",
     to: "/app/roadmap",
@@ -96,7 +104,7 @@ const PRIMARY_NAV: NavItem[] = [
     id: "mentors",
     label: "AI Mentors",
     to: "/app/launchpad/mentors",
-    icon: GraduationCap,
+    icon: Compass,
     match: (p) => p === "/app/launchpad/mentors",
   },
   {
@@ -203,11 +211,7 @@ export function AppSidebar({ onOpenRail: _onOpenRail }: { onOpenRail?: () => voi
   const nav = [isOperate ? HOME_OPERATE : HOME_CREATE, ...PRIMARY_NAV];
 
   return (
-    <SidebarChrome
-      brand="Launchpad Bylda"
-      tagline="Your business operating system"
-      brandIcon={Rocket}
-    >
+    <SidebarChrome brand="Bylda" tagline="Your business operating system" brandIcon={Rocket}>
       {({ collapsed }) => (
         <>
           <div className={cn("px-2 space-y-px", collapsed && "px-1.5")}>

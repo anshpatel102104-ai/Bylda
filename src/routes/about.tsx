@@ -480,7 +480,7 @@ const FEATURES = [
   {
     icon: Rocket,
     color: "#3b82f6",
-    title: "Launchpad",
+    title: "Bylda Studio",
     desc: "17 AI tools covering every stage — from idea validation and pitch generation to competitor analysis and revenue projections.",
   },
   {

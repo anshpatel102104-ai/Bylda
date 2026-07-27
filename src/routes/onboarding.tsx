@@ -31,14 +31,21 @@ function spineIndexFromAnswers(answers: IntakeAnswers | undefined): number {
 }
 
 // Accent used during the pre-track detection step (mode isn't known yet).
-const DETECT_ACCENT = "#8b5cf6";
-const DETECT_ACCENT_DARK = "#6d28d9";
+const DETECT_ACCENT = "#38bdf8";
+const DETECT_ACCENT_DARK = "#0284c7";
+
+// Deep-sky luxury canvas — night sky above the clouds, azure glow on the horizon.
+const SKY_CANVAS =
+  "radial-gradient(120% 80% at 78% -10%, rgba(56,189,248,0.16) 0%, transparent 55%)," +
+  "radial-gradient(90% 60% at 12% 8%, rgba(99,102,241,0.12) 0%, transparent 55%)," +
+  "radial-gradient(70% 50% at 50% 118%, rgba(2,132,199,0.14) 0%, transparent 60%)," +
+  "linear-gradient(180deg, #0a1430 0%, #060b1c 52%, #04060f 100%)";
 
 type Mode = "create" | "operate";
 
 const ACCENTS: Record<Mode, { accent: string; accentDark: string }> = {
-  create: { accent: "#f97316", accentDark: "#ea580c" },
-  operate: { accent: "#06b6d4", accentDark: "#0e7490" },
+  create: { accent: "#38bdf8", accentDark: "#0284c7" },
+  operate: { accent: "#22d3ee", accentDark: "#0e7490" },
 };
 
 export const Route = createFileRoute("/onboarding")({
@@ -174,7 +181,7 @@ function Onboarding() {
       style={{
         position: "fixed",
         inset: 0,
-        background: "#0a0805",
+        background: SKY_CANVAS,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -182,7 +189,7 @@ function Onboarding() {
     >
       <style>{ANIM_CSS}</style>
 
-      <div style={{ position: "absolute", inset: 0, opacity: 0.25 }}>
+      <div style={{ position: "absolute", inset: 0, opacity: 0.18 }}>
         <NeuralCanvas className="w-full h-full" />
       </div>
 
@@ -211,33 +218,38 @@ function Onboarding() {
           justifyContent: "center",
         }}
       >
-        {/* Bylda wordmark */}
-        <div style={{ marginBottom: 28, display: "flex", alignItems: "center", gap: 8 }}>
+        {/* Bylda wordmark — sky-island mark (sun over a floating cloud) */}
+        <div style={{ marginBottom: 30, display: "flex", alignItems: "center", gap: 10 }}>
           <div
             style={{
-              width: 32,
-              height: 32,
-              borderRadius: "50%",
+              width: 34,
+              height: 34,
+              borderRadius: 11,
               background:
                 phase === "detect"
-                  ? `linear-gradient(135deg, ${DETECT_ACCENT}, ${DETECT_ACCENT_DARK})`
-                  : `linear-gradient(135deg, ${accent}, ${accentDark})`,
+                  ? `linear-gradient(140deg, ${DETECT_ACCENT}, ${DETECT_ACCENT_DARK})`
+                  : `linear-gradient(140deg, ${accent}, ${accentDark})`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 13,
-              fontWeight: 800,
-              color: "#fff",
+              boxShadow: `0 6px 22px color-mix(in oklab, ${phase === "detect" ? DETECT_ACCENT : accent} 45%, transparent)`,
             }}
           >
-            N
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <circle cx="16" cy="8" r="3" fill="#fff" />
+              <path
+                d="M4 16c0-1.9 1.6-3.4 3.5-3.4.3 0 .6 0 .9.1A3.6 3.6 0 0 1 15 13a2.8 2.8 0 0 1 2.6 2.8c0 .2 0 .3-.1.5H4.3A2 2 0 0 1 4 16Z"
+                fill="#fff"
+              />
+            </svg>
           </div>
           <span
             style={{
-              fontSize: 15,
+              fontSize: 17,
               fontWeight: 700,
-              letterSpacing: "-0.01em",
-              color: "rgba(247,240,232,0.7)",
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: "rgba(238,246,255,0.92)",
             }}
           >
             Bylda
@@ -245,7 +257,7 @@ function Onboarding() {
         </div>
 
         {phase === "loading" && (
-          <div style={{ color: "rgba(247,240,232,0.4)", fontSize: 13, fontFamily: "monospace" }}>
+          <div style={{ color: "rgba(238,246,255,0.4)", fontSize: 13, fontFamily: "monospace" }}>
             loading…
           </div>
         )}
@@ -392,7 +404,7 @@ function ProvisioningScreen({
                 >
                   {state === "done" ? "✓" : ""}
                 </span>
-                <span style={{ fontSize: 13.5, color: "rgba(247,240,232,0.8)" }}>{label}</span>
+                <span style={{ fontSize: 13.5, color: "rgba(238,246,255,0.8)" }}>{label}</span>
               </div>
             );
           })}
@@ -402,14 +414,14 @@ function ProvisioningScreen({
             <p
               style={{
                 fontSize: 13.5,
-                color: "rgba(247,240,232,0.75)",
+                color: "rgba(238,246,255,0.75)",
                 lineHeight: 1.6,
                 margin: 0,
               }}
             >
               {error}
             </p>
-            <p style={{ fontSize: 12, color: "rgba(247,240,232,0.4)", lineHeight: 1.6 }}>
+            <p style={{ fontSize: 12, color: "rgba(238,246,255,0.4)", lineHeight: 1.6 }}>
               Your answers are saved — nothing is lost. Retry now, or come back later and Bylda will
               pick up where you left off.
             </p>
@@ -466,7 +478,7 @@ function WelcomeScreen({ mode, onSkip }: { mode: Mode; onSkip: () => void }) {
       style={{
         position: "fixed",
         inset: 0,
-        background: "#0a0805",
+        background: SKY_CANVAS,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -479,7 +491,7 @@ function WelcomeScreen({ mode, onSkip }: { mode: Mode; onSkip: () => void }) {
         style={{
           position: "absolute",
           inset: 0,
-          opacity: phase === "reveal" ? 0.12 : 0.22,
+          opacity: phase === "reveal" ? 0.1 : 0.18,
           transition: "opacity 1s",
         }}
       >
@@ -493,7 +505,7 @@ function WelcomeScreen({ mode, onSkip }: { mode: Mode; onSkip: () => void }) {
           height: 600,
           borderRadius: "50%",
           background:
-            "radial-gradient(ellipse, rgba(249,115,22,0.12) 0%, rgba(251,191,36,0.05) 40%, transparent 70%)",
+            "radial-gradient(ellipse, rgba(56,189,248,0.16) 0%, rgba(125,211,252,0.06) 40%, transparent 70%)",
           transition: "opacity 1s",
           opacity: phase === "reveal" ? 1 : 0.4,
           animation: "ambientPulse 4s ease-in-out infinite",
@@ -517,12 +529,12 @@ function WelcomeScreen({ mode, onSkip }: { mode: Mode; onSkip: () => void }) {
                 key={line}
                 style={{
                   fontSize: 13,
-                  color: "rgba(249,115,22,0.85)",
+                  color: "rgba(125,211,252,0.9)",
                   lineHeight: 2.1,
                   animation: "bootLine 0.35s ease both",
                 }}
               >
-                <span style={{ color: "rgba(251,191,36,0.7)", marginRight: 8 }}>›</span>
+                <span style={{ color: "rgba(56,189,248,0.75)", marginRight: 8 }}>›</span>
                 {line}
                 {i === lineIdx - 1 && (
                   <span style={{ animation: "ambientPulse 1s infinite" }}>_</span>
@@ -540,7 +552,7 @@ function WelcomeScreen({ mode, onSkip }: { mode: Mode; onSkip: () => void }) {
                 fontWeight: 700,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "#f97316",
+                color: "#38bdf8",
                 marginBottom: 20,
                 animation: "fadeUp 0.6s ease 0.15s both",
                 opacity: 0,
@@ -555,9 +567,9 @@ function WelcomeScreen({ mode, onSkip }: { mode: Mode; onSkip: () => void }) {
                 fontWeight: 900,
                 letterSpacing: "-0.05em",
                 lineHeight: 1.04,
-                color: "#f7f0e8",
+                color: "#eef6ff",
                 margin: "0 0 8px",
-                textShadow: "0 0 60px rgba(249,115,22,0.2)",
+                textShadow: "0 0 60px rgba(56,189,248,0.25)",
               }}
             >
               Bylda is ready.
@@ -568,8 +580,8 @@ function WelcomeScreen({ mode, onSkip }: { mode: Mode; onSkip: () => void }) {
                 margin: "22px auto 0",
                 height: 2,
                 borderRadius: 2,
-                background: "linear-gradient(90deg, transparent, #f97316, #fbbf24, transparent)",
-                boxShadow: "0 0 20px rgba(249,115,22,0.6)",
+                background: "linear-gradient(90deg, transparent, #38bdf8, #7dd3fc, transparent)",
+                boxShadow: "0 0 20px rgba(56,189,248,0.6)",
                 animation: "lineExpand 0.9s cubic-bezier(0.16,1,0.3,1) 0.3s both",
               }}
             />
@@ -578,7 +590,7 @@ function WelcomeScreen({ mode, onSkip }: { mode: Mode; onSkip: () => void }) {
               style={{
                 marginTop: 22,
                 fontSize: 16,
-                color: "rgba(247,240,232,0.45)",
+                color: "rgba(238,246,255,0.45)",
                 lineHeight: 1.65,
                 animation: "fadeUp 0.6s ease 0.5s both",
                 opacity: 0,
@@ -616,13 +628,13 @@ function WelcomeScreen({ mode, onSkip }: { mode: Mode; onSkip: () => void }) {
                     width: 6,
                     height: 6,
                     borderRadius: "50%",
-                    background: "#f97316",
-                    boxShadow: "0 0 10px #f97316",
+                    background: "#38bdf8",
+                    boxShadow: "0 0 10px #38bdf8",
                     animation: "ambientPulse 1.4s ease-in-out infinite",
                   }}
                 />
                 <span
-                  style={{ fontSize: 12, color: "rgba(247,240,232,0.3)", fontFamily: "monospace" }}
+                  style={{ fontSize: 12, color: "rgba(238,246,255,0.3)", fontFamily: "monospace" }}
                 >
                   loading dashboard…
                 </span>
@@ -631,9 +643,9 @@ function WelcomeScreen({ mode, onSkip }: { mode: Mode; onSkip: () => void }) {
                 onClick={onSkip}
                 style={{
                   fontSize: 12,
-                  color: "rgba(247,240,232,0.5)",
+                  color: "rgba(238,246,255,0.5)",
                   background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(249,115,22,0.15)",
+                  border: "1px solid rgba(56,189,248,0.2)",
                   borderRadius: 8,
                   padding: "6px 16px",
                   cursor: "pointer",
@@ -644,13 +656,13 @@ function WelcomeScreen({ mode, onSkip }: { mode: Mode; onSkip: () => void }) {
                 Skip → Go to dashboard
               </button>
               {showFallback && (
-                <div style={{ fontSize: 11, color: "rgba(247,240,232,0.3)", marginTop: 4 }}>
+                <div style={{ fontSize: 11, color: "rgba(238,246,255,0.3)", marginTop: 4 }}>
                   Taking too long?{" "}
                   <button
                     onClick={onSkip}
                     style={{
                       fontSize: 11,
-                      color: "#f97316",
+                      color: "#38bdf8",
                       background: "none",
                       border: "none",
                       cursor: "pointer",

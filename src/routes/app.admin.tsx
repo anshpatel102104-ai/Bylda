@@ -1211,7 +1211,8 @@ function AdminHub() {
             <div
               className="rounded-xl p-5"
               style={{
-                background: "linear-gradient(135deg, rgba(249,115,22,0.08), rgba(124,58,237,0.06))",
+                background:
+                  "linear-gradient(135deg, rgba(249,115,22,0.08), rgba(2, 132, 199,0.06))",
                 border: "1px solid var(--border)",
               }}
             >

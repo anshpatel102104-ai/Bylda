@@ -40,7 +40,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/app/billing": "Billing",
   "/app/bylda/reports": "Reports",
   "/app/assets": "Assets",
-  "/app/academy": "Academy",
+  "/app/academy": "Course",
   "/app/tutorials": "Tutorials",
   "/app/mentor": "Ask Bylda",
   "/app/admin": "Admin",
@@ -55,6 +55,7 @@ const SECTION_LABELS: Record<string, string> = {
   "/app/playbook": "Execute",
   "/app/mission-control": "Execute",
   "/app/bylda-home": "Operate",
+  "/app/academy": "Learn",
   "/app/launchpad": "Workbench",
   "/app/research": "Workbench",
   "/app/bylda/crm": "Operate",
@@ -142,10 +143,16 @@ export function AppTopbar({ onToggleRail, railOpen }: AppTopbarProps) {
         {/* ── Mobile logo ── */}
         <Link to="/app/mission-control" className="flex items-center gap-2 lg:hidden shrink-0">
           <div
-            className="h-7 w-7 rounded-lg flex items-center justify-center text-white text-[10px] font-bold"
+            className="h-7 w-7 rounded-lg flex items-center justify-center text-white"
             style={{ background: "linear-gradient(135deg, var(--primary), var(--orbit-accent))" }}
           >
-            LN
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+              <circle cx="16" cy="8" r="3" fill="#fff" />
+              <path
+                d="M4 16c0-1.9 1.6-3.4 3.5-3.4.3 0 .6 0 .9.1A3.6 3.6 0 0 1 15 13a2.8 2.8 0 0 1 2.6 2.8c0 .2 0 .3-.1.5H4.3A2 2 0 0 1 4 16Z"
+                fill="#fff"
+              />
+            </svg>
           </div>
         </Link>
 

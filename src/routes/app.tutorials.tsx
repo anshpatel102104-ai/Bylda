@@ -327,7 +327,7 @@ const CATEGORY_CONFIG: Record<
 > = {
   "Getting Started": { icon: BookOpen, color: "#059669", bg: "rgba(5,150,105,0.10)" },
   "CRM & Pipeline": { icon: LayoutGrid, color: "#3B82F6", bg: "rgba(59,130,246,0.10)" },
-  Automations: { icon: Zap, color: "#7C3AED", bg: "rgba(124,58,237,0.10)" },
+  Automations: { icon: Zap, color: "#7C3AED", bg: "rgba(2, 132, 199,0.10)" },
   Marketing: { icon: Megaphone, color: "#D97706", bg: "rgba(217,119,6,0.10)" },
   "Reports & Analytics": { icon: BarChart3, color: "#EC4899", bg: "rgba(236,72,153,0.10)" },
   "Settings & Admin": { icon: Settings, color: "#6B7280", bg: "rgba(107,114,128,0.10)" },
@@ -336,7 +336,7 @@ const CATEGORY_CONFIG: Record<
 const DIFFICULTY_CONFIG = {
   Beginner: { color: "#059669", bg: "rgba(5,150,105,0.10)" },
   Intermediate: { color: "#D97706", bg: "rgba(217,119,6,0.10)" },
-  Advanced: { color: "#7C3AED", bg: "rgba(124,58,237,0.10)" },
+  Advanced: { color: "#7C3AED", bg: "rgba(2, 132, 199,0.10)" },
 };
 
 const CATEGORIES: TutorialCategory[] = [
