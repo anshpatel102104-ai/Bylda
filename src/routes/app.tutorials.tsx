@@ -19,6 +19,7 @@ import {
   Video,
   ExternalLink,
   PlayCircle,
+  type LucideIcon,
 } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -323,7 +324,7 @@ const TUTORIALS: Tutorial[] = [
 /* ── Category config ─────────────────────────────────────────── */
 const CATEGORY_CONFIG: Record<
   Exclude<TutorialCategory, "All">,
-  { icon: React.ElementType; color: string; bg: string }
+  { icon: LucideIcon; color: string; bg: string }
 > = {
   "Getting Started": { icon: BookOpen, color: "#059669", bg: "rgba(5,150,105,0.10)" },
   "CRM & Pipeline": { icon: LayoutGrid, color: "#3B82F6", bg: "rgba(59,130,246,0.10)" },

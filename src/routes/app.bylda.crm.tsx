@@ -53,6 +53,7 @@ import {
   UserCircle,
   RefreshCw,
   XCircle,
+  type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { leadsQuery } from "@/lib/queries";
@@ -167,10 +168,7 @@ const PRIORITY_CONFIG: Record<
   high: { color: "#DC2626", bg: "rgba(220,38,38,0.10)", text: "#991B1B", label: "High" },
 };
 
-const ACTIVITY_CONFIG: Record<
-  ActivityType,
-  { icon: React.ElementType; color: string; label: string }
-> = {
+const ACTIVITY_CONFIG: Record<ActivityType, { icon: LucideIcon; color: string; label: string }> = {
   note: { icon: MessageSquare, color: "#6B7280", label: "Note" },
   stage_change: { icon: ArrowRight, color: "#7C3AED", label: "Stage Change" },
   email: { icon: Mail, color: "#3B82F6", label: "Email" },
