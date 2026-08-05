@@ -1,35 +1,41 @@
 /**
- * THE MARK, IN THREE DIMENSIONS
+ * THE LOGO, AS A TUNNEL
  *
- * The Bylda logo is a sun rising over a floating island, held inside a rounded
- * badge. Here the badge becomes a machined aperture with a hollow centre — the
- * thing the camera eventually flies through — and the sun and island become
- * solid objects that part to let it pass.
+ * The Bylda badge is a thin rounded-square holding a sun over a floating island.
+ * Kept at its real proportions — a hairline ring, not a picture frame — and then
+ * extruded a long way back along Z. Head-on it reads as the logo you already
+ * ship. Fly at it and the ring becomes the mouth of a tunnel.
  *
- * The island silhouette is the production SVG path, extruded, so the 3D mark is
- * the same drawing as `components/brand/Logo.tsx` rather than an approximation.
+ * The island silhouette is the production SVG path from
+ * `components/brand/Logo.tsx`, so this is the same drawing, not a lookalike.
  */
 import * as THREE from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
 
-/** Outer edge of the aperture, in world units. */
-export const FRAME_OUTER = 3.5;
-/** Inner edge — this is the hole the camera passes through. */
-export const FRAME_INNER = 2.52;
-export const FRAME_DEPTH = 0.42;
+/** Outer edge of the badge, in world units. */
+export const BADGE = 4.0;
+/** Ring thickness. The real badge border is a hairline; this is the 3D read. */
+export const RING = 0.2;
+/** How far back the badge opening runs before it lets you out. */
+export const TUNNEL_DEPTH = 15;
 
-/** SVG viewBox units → world units. The logo art is authored on a 24×24 grid. */
-const MARK_SCALE = 2.25 / 24;
+const OUTER_RADIUS = BADGE * 0.3;
+const INNER = BADGE - RING * 2;
 
-/** Maps a point in the logo's SVG grid onto the mark's local space. */
+/** SVG viewBox units → world. The logo art is authored on a 24×24 grid. */
+const ART_SCALE = 3.3 / 24;
+
+/** Maps a point in the logo's SVG grid onto the badge's local space. */
 export function svgToMark(x: number, y: number): [number, number] {
-  return [MARK_SCALE * (x - 12), -MARK_SCALE * (y - 12)];
+  return [ART_SCALE * (x - 12), -ART_SCALE * (y - 12)];
 }
 
 export const SUN = {
-  radius: 3 * MARK_SCALE,
+  radius: 3 * ART_SCALE,
   position: svgToMark(16, 8),
 };
+
+export const ISLAND_SCALE = ART_SCALE;
 
 /** Path lifted verbatim from the brand mark. */
 const ISLAND_PATH =
@@ -38,14 +44,13 @@ const ISLAND_PATH =
 /* ── rounded rectangles ───────────────────────────────────────────────────── */
 
 /** Counter-clockwise outline of a rounded rectangle, as explicit points. */
-function roundedRectPoints(w: number, h: number, r: number, seg = 14): THREE.Vector2[] {
-  const hw = w / 2 - r;
-  const hh = h / 2 - r;
+function roundedRectPoints(size: number, r: number, seg = 16): THREE.Vector2[] {
+  const h = size / 2 - r;
   const corners: [number, number, number][] = [
-    [hw, hh, 0],
-    [-hw, hh, Math.PI / 2],
-    [-hw, -hh, Math.PI],
-    [hw, -hh, -Math.PI / 2],
+    [h, h, 0],
+    [-h, h, Math.PI / 2],
+    [-h, -h, Math.PI],
+    [h, -h, -Math.PI / 2],
   ];
   const pts: THREE.Vector2[] = [];
   for (const [cx, cy, start] of corners) {
@@ -57,20 +62,25 @@ function roundedRectPoints(w: number, h: number, r: number, seg = 14): THREE.Vec
   return pts;
 }
 
-/**
- * The aperture: a rounded square with a rounded square punched out of it,
- * extruded and bevelled so the edges catch the studio kickers.
- */
-export function buildFrameGeometry(): THREE.BufferGeometry {
-  const shape = new THREE.Shape(roundedRectPoints(FRAME_OUTER, FRAME_OUTER, 0.78));
+function ringShape(outer: number, inner: number, outerR: number) {
+  const shape = new THREE.Shape(roundedRectPoints(outer, outerR));
+  const innerR = Math.max(0.04, outerR - (outer - inner) / 2);
   // Holes wind the opposite way from the outline.
-  shape.holes.push(new THREE.Path(roundedRectPoints(FRAME_INNER, FRAME_INNER, 0.46).reverse()));
+  shape.holes.push(new THREE.Path(roundedRectPoints(inner, innerR).reverse()));
+  return shape;
+}
 
-  const geometry = new THREE.ExtrudeGeometry(shape, {
-    depth: FRAME_DEPTH,
+/**
+ * The badge itself: a shallow ring, the depth of a real object rather than a
+ * corridor. This is all that exists head-on, so the mark reads as the flat logo
+ * with nothing but black behind the opening.
+ */
+export function buildBadgeGeometry(): THREE.BufferGeometry {
+  const geometry = new THREE.ExtrudeGeometry(ringShape(BADGE, INNER, OUTER_RADIUS), {
+    depth: 0.3,
     bevelEnabled: true,
-    bevelThickness: 0.05,
-    bevelSize: 0.05,
+    bevelThickness: 0.035,
+    bevelSize: 0.035,
     bevelOffset: 0,
     bevelSegments: 4,
     curveSegments: 1,
@@ -81,15 +91,30 @@ export function buildFrameGeometry(): THREE.BufferGeometry {
 }
 
 /**
- * A thin ring that sits just inside the aperture. Rendered additively, it is
- * the light spilling out of the opening as the camera commits to it.
+ * The corridor behind the opening. Deliberately a separate object from the
+ * badge: it is switched on only once the lens is close enough that the mouth
+ * fills the frame, so the visitor never sees a box sitting inside a logo.
  */
-export function buildRimGeometry(): THREE.BufferGeometry {
-  const inner = FRAME_INNER - 0.02;
-  const shape = new THREE.Shape(roundedRectPoints(inner + 0.14, inner + 0.14, 0.5));
-  shape.holes.push(new THREE.Path(roundedRectPoints(inner, inner, 0.46).reverse()));
-  const geometry = new THREE.ExtrudeGeometry(shape, {
-    depth: FRAME_DEPTH * 0.72,
+export function buildTunnelGeometry(): THREE.BufferGeometry {
+  const geometry = new THREE.ExtrudeGeometry(ringShape(BADGE, INNER, OUTER_RADIUS), {
+    depth: TUNNEL_DEPTH,
+    bevelEnabled: false,
+    curveSegments: 1,
+  });
+  // Starts just behind the badge and runs back into negative Z.
+  geometry.translate(0, 0, -TUNNEL_DEPTH - 0.14);
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
+/**
+ * A thin flat ring used for the light bands set into the tunnel wall. They rush
+ * past the lens and are what actually sells the speed.
+ */
+export function buildBandGeometry(inset: number): THREE.BufferGeometry {
+  const outer = INNER - inset;
+  const geometry = new THREE.ExtrudeGeometry(ringShape(outer, outer - 0.09, OUTER_RADIUS - inset), {
+    depth: 0.05,
     bevelEnabled: false,
     curveSegments: 1,
   });
@@ -108,42 +133,60 @@ export function buildIslandGeometry(): THREE.BufferGeometry {
   const shapes = paths.flatMap((p) => SVGLoader.createShapes(p));
 
   const geometry = new THREE.ExtrudeGeometry(shapes, {
-    depth: 1.6,
+    depth: 1.4,
     bevelEnabled: true,
-    bevelThickness: 0.18,
-    bevelSize: 0.18,
+    bevelThickness: 0.16,
+    bevelSize: 0.16,
     bevelOffset: 0,
     bevelSegments: 4,
     curveSegments: 18,
   });
-  // Centre on the badge origin so the half turn about X lands it correctly.
-  geometry.translate(-12, -12, -0.8);
+  geometry.translate(-12, -12, -0.7);
   geometry.computeVertexNormals();
   return geometry;
 }
 
-export const ISLAND_SCALE = MARK_SCALE;
-
 /* ── materials ────────────────────────────────────────────────────────────── */
 
 export function makeChromeMaterials() {
-  const frame = new THREE.MeshStandardMaterial({
+  // The badge: bright polished chrome, the hero object.
+  const badge = new THREE.MeshStandardMaterial({
     color: new THREE.Color("#ffffff"),
     metalness: 1,
-    roughness: 0.055,
+    roughness: 0.08,
     envMapIntensity: 1.45,
   });
-  const sun = new THREE.MeshStandardMaterial({
-    color: new THREE.Color("#ffcc57"),
+  // The corridor: dark chrome. A metal's colour tints what it reflects, so a
+  // near-black body keeps the tube moody instead of a white-hot box, and the
+  // higher roughness stops the walls aliasing into speckle at grazing angles.
+  // Front-side only — a double-sided tube draws both walls into nearly the
+  // same pixels from inside.
+  const tunnel = new THREE.MeshStandardMaterial({
+    color: new THREE.Color("#63748f"),
     metalness: 1,
-    roughness: 0.085,
-    envMapIntensity: 1.6,
+    roughness: 0.3,
+    envMapIntensity: 1.35,
+    side: THREE.FrontSide,
+    transparent: true,
+    opacity: 0,
+  });
+  // The sun and island carry brand colour, not just reflections — a little
+  // emissive keeps them readable as the logo at any angle.
+  const sun = new THREE.MeshStandardMaterial({
+    color: new THREE.Color("#f5b638"),
+    metalness: 0.75,
+    roughness: 0.22,
+    envMapIntensity: 1.1,
+    emissive: new THREE.Color("#c07b06"),
+    emissiveIntensity: 0.55,
   });
   const island = new THREE.MeshStandardMaterial({
-    color: new THREE.Color("#d6efff"),
-    metalness: 1,
-    roughness: 0.13,
-    envMapIntensity: 1.35,
+    color: new THREE.Color("#cfe6ff"),
+    metalness: 0.8,
+    roughness: 0.2,
+    envMapIntensity: 1.1,
+    emissive: new THREE.Color("#2a5f9e"),
+    emissiveIntensity: 0.35,
   });
-  return { frame, sun, island };
+  return { badge, tunnel, sun, island };
 }
